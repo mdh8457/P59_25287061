@@ -101,4 +101,6 @@ public class CombatSystem {
     public boolean isGameOver() {
         return player.hp <= 0 || enemy.hp <= 0;
     }
+
+    
 }

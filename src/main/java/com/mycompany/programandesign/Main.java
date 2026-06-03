@@ -25,28 +25,29 @@ public class Main {
         Character player = new Character("Player", 100);
         AICharacter ai = new AICharacter("AI", 100);
 
-        // ATTACKS
-        Move quickJab = new Move("Quick Jab", 10, 5, 0, "ATTACK", 0, 0);
-        Move jab = new Move("Jab", 15, 3, 0, "ATTACK", 0, 0);
-        Move heavyJab = new Move("Heavy Jab", 25, 1, 0, "ATTACK", 0, 0);
-
-        Move quickKick = new Move("Quick Kick", 5, 6, 1, "ATTACK", 0, 0);
-        Move kick = new Move("Kick", 10, 3, 1, "ATTACK", 0, 0);
-        Move heavyKick = new Move("Heavy Kick", 20, 1, 1, "ATTACK", 0, 0);
+        // ATTACKS                name          dmg spd stun  type    dmgRed reflect reach cooldown
+        Move quickJab  = new Move("Quick Jab",  10, 5,  0, "ATTACK", 0,     0,      80);
+        Move jab       = new Move("Jab",        15, 3,  0, "ATTACK", 0,     0,      90);
+        Move heavyJab  = new Move("Heavy Jab",  25, 1,  0, "ATTACK", 0,     0,      100);
+        Move quickKick = new Move("Quick Kick",  5, 6,  1, "ATTACK", 0,     0,      110);
+        Move kick      = new Move("Kick",       10, 3,  1, "ATTACK", 0,     0,      120);
+        Move heavyKick = new Move("Heavy Kick", 20, 1,  1, "ATTACK", 0,     0,      130);
 
         // BLOCKS
-        Move block1 = new Move("Block 1", 0, 5, 0, "BLOCK", 0.2, 0);
-        Move block2 = new Move("Block 2", 0, 4, 0, "BLOCK", 0.4, 0);
-        Move block3 = new Move("Block 3", 0, 3, 0, "BLOCK", 0.6, 0);
-        Move block4 = new Move("Block 4", 0, 2, 0, "BLOCK", 0.8, 0);
-        Move block5 = new Move("Block 5", 0, 1, 0, "BLOCK", 1.0, 0);
+        Move block1 = new Move("Block 1", 0, 5, 0, "BLOCK", 0.2, 0, 0);
+        Move block2 = new Move("Block 2", 0, 4, 0, "BLOCK", 0.4, 0, 0);
+        Move block3 = new Move("Block 3", 0, 3, 0, "BLOCK", 0.6, 0, 0);
+        Move block4 = new Move("Block 4", 0, 2, 0, "BLOCK", 0.8, 0, 0);
+        Move block5 = new Move("Block 5", 0, 1, 0, "BLOCK", 1.0, 0, 0);
 
         // PARRIES
-        Move parry1 = new Move("Parry 1", 0, 5, 0, "PARRY", 0.1, 0.2);
-        Move parry2 = new Move("Parry 2", 0, 4, 0, "PARRY", 0.2, 0.4);
-        Move parry3 = new Move("Parry 3", 0, 3, 0, "PARRY", 0.3, 0.6);
-        Move parry4 = new Move("Parry 4", 0, 2, 0, "PARRY", 0.4, 0.8);
-        Move fullParry = new Move("Full Parry", 0, 1, 0, "PARRY", 0.5, 1.0);
+        Move parry1    = new Move("Parry 1",    0, 5, 0, "PARRY", 0.1, 0.2, 0);
+        Move parry2    = new Move("Parry 2",    0, 4, 0, "PARRY", 0.2, 0.4, 0);
+        Move parry3    = new Move("Parry 3",    0, 3, 0, "PARRY", 0.3, 0.6, 0);
+        Move parry4    = new Move("Parry 4",    0, 2, 0, "PARRY", 0.4, 0.8, 0);
+        Move fullParry = new Move("Full Parry", 0, 1, 0, "PARRY", 0.5, 1.0, 0);
+
+        
 
         // ADD ALL MOVES
         Move[] allMoves = {

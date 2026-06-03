@@ -17,9 +17,13 @@ public class Move {
 
     double damageReduction;
     double reflectPercent;
+    
+    // New stats
+    int reach;       // how far the move can hit (pixels)
+    
 
     public Move(String name, int damage, int speed, int stun, String type,
-                double damageReduction, double reflectPercent) {
+                double damageReduction, double reflectPercent, int reach) {
         this.name = name;
         this.damage = damage;
         this.speed = speed;
@@ -27,5 +31,8 @@ public class Move {
         this.type = type;
         this.damageReduction = damageReduction;
         this.reflectPercent = reflectPercent;
+        this.reach = reach;
+        
     }
+    
 }
