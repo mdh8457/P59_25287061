@@ -45,10 +45,10 @@ public class GamePanel extends JPanel implements ActionListener {
     private final MovementSystem aiMovement;
  
     // --- Renderers ---
-    //private final StickFigureRenderer playerRenderer;
-    //private final StickFigureRenderer aiRenderer;
+    private final StickFigureRenderer playerRenderer;
+    private final StickFigureRenderer aiRenderer;
  
-    
+    private boolean shiftHeld = false;
  
     // --- Combat state ---
     private Move pendingPlayerMove = null;
@@ -87,17 +87,18 @@ public class GamePanel extends JPanel implements ActionListener {
         aiMovement     = new MovementSystem(600, false);
  
         // Player renderer: blue theme
-        //playerRenderer = new StickFigureRenderer(
-            //new Color(180, 220, 255),
-            //new Color(80, 160, 255)
-        //);
+        playerRenderer = new StickFigureRenderer(
+            new Color(180, 220, 255),
+            new Color(80, 160, 255)
+        );
         // AI renderer: red theme
-        //aiRenderer = new StickFigureRenderer(
-            //new Color(255, 200, 190),
-            //new Color(255, 80, 80)
-        //);
+        aiRenderer = new StickFigureRenderer(
+            new Color(255, 200, 190),
+            new Color(255, 80, 80)
+        );
  
         setupFonts();
+        setupKeyBindings();
         
  
         gameTimer = new Timer(1000 / FPS, this);
@@ -282,7 +283,10 @@ public class GamePanel extends JPanel implements ActionListener {
     }
  
     private void drawStickFigures(Graphics2D g2) {
-        
+        playerRenderer.draw(g2, playerMovement.getX(), playerMovement.getY(),
+            playerMovement.getState(), playerMovement.getAnimFrame(), playerMovement.isFacingRight());
+        aiRenderer.draw(g2, aiMovement.getX(), aiMovement.getY(),
+            aiMovement.getState(), aiMovement.getAnimFrame(), aiMovement.isFacingRight());
     }
  
     private void drawCombatMessage(Graphics2D g2) {
@@ -344,6 +348,61 @@ public class GamePanel extends JPanel implements ActionListener {
  
     // ===================== Key Bindings =====================
  
+    private void setupKeyBindings() {
+        InputMap im = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getActionMap();
+
+        bindKey(im, am, KeyEvent.VK_LEFT,  false, "left_press",    () -> {
+            if (shiftHeld) playerMovement.setRollPressed(true);
+            else playerMovement.setMovingLeft(true);
+        });
+        bindKey(im, am, KeyEvent.VK_RIGHT, false, "right_press",   () -> {
+            if (shiftHeld) playerMovement.setRollPressed(true);
+            else playerMovement.setMovingRight(true);
+        });
+        bindKey(im, am, KeyEvent.VK_UP,    false, "up_press",      () -> playerMovement.setJumpPressed(true));
+        bindKey(im, am, KeyEvent.VK_DOWN,  false, "down_press",    () -> playerMovement.setCrouchPressed(true));
+        bindKey(im, am, KeyEvent.VK_LEFT,  true,  "left_release",  () -> playerMovement.setMovingLeft(false));
+        bindKey(im, am, KeyEvent.VK_RIGHT, true,  "right_release", () -> playerMovement.setMovingRight(false));
+        bindKey(im, am, KeyEvent.VK_DOWN,  true,  "down_release",  () -> playerMovement.setCrouchPressed(false));
+        bindKey(im, am, KeyEvent.VK_SHIFT, false, "shift_press",   () -> shiftHeld = true);
+        bindKey(im, am, KeyEvent.VK_SHIFT, true,  "shift_release", () -> shiftHeld = false);
+
+        bindCombat(im, am, KeyEvent.VK_A, quickJab);
+        bindCombat(im, am, KeyEvent.VK_W, jab);
+        bindCombat(im, am, KeyEvent.VK_D, heavyJab);
+        bindCombat(im, am, KeyEvent.VK_J, quickKick);
+        bindCombat(im, am, KeyEvent.VK_I, kick);
+        bindCombat(im, am, KeyEvent.VK_K, heavyKick);
+        bindCombat(im, am, KeyEvent.VK_1, block1);
+        bindCombat(im, am, KeyEvent.VK_2, block2);
+        bindCombat(im, am, KeyEvent.VK_3, block3);
+        bindCombat(im, am, KeyEvent.VK_4, block4);
+        bindCombat(im, am, KeyEvent.VK_5, block5);
+        bindCombat(im, am, KeyEvent.VK_6, parry1);
+        bindCombat(im, am, KeyEvent.VK_7, parry2);
+        bindCombat(im, am, KeyEvent.VK_8, parry3);
+        bindCombat(im, am, KeyEvent.VK_9, parry4);
+        bindCombat(im, am, KeyEvent.VK_0, fullParry);
+    }
+    
+    
+    private void bindKey(InputMap im, ActionMap am, int keyCode, boolean onRelease,
+                         String name, Runnable action) {
+        im.put(KeyStroke.getKeyStroke(keyCode, 0, onRelease), name);
+        am.put(name, new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) { action.run(); }
+        });
+    }
+
+    private void bindCombat(InputMap im, ActionMap am, int keyCode, Move move) {
+        im.put(KeyStroke.getKeyStroke(keyCode, 0, false), "combat_" + keyCode);
+        am.put("combat_" + keyCode, new AbstractAction() {
+            @Override public void actionPerformed(ActionEvent e) {
+                pendingPlayerMove = move;
+            }
+        });
+    }
     
  
     // ===================== Setup =====================
