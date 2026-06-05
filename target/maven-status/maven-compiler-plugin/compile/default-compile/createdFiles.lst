@@ -4,10 +4,13 @@ com\mycompany\programandesign\Main.class
 com\mycompany\programandesign\Character.class
 com\mycompany\programandesign\GamePanel.class
 com\mycompany\programandesign\GameManager.class
+com\mycompany\programandesign\GamePanel$1.class
 com\mycompany\programandesign\MoveResult.class
 com\mycompany\programandesign\StickFigureRenderer.class
 com\mycompany\programandesign\MovementSystem.class
 com\mycompany\programandesign\CombatSystem.class
+com\mycompany\programandesign\StickFigureRenderer$1.class
+com\mycompany\programandesign\GamePanel$2.class
 com\mycompany\programandesign\Move.class
 com\mycompany\programandesign\AICharacter.class
 com\mycompany\programandesign\DatabaseManager.class
