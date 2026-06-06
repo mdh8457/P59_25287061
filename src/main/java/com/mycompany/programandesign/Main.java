@@ -9,18 +9,18 @@ package com.mycompany.programandesign;
  * @author TOSHIBA
  */
 import java.util.*;
-import java.sql.SQLException;
+//import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        DatabaseManager db = new DatabaseManager();
-        try {
-            db.connect();
-        } catch (SQLException e) {
-            System.out.println("DB error: " + e.getMessage());
-        }
+        //DatabaseManager db = new DatabaseManager();
+        //try {
+            //db.connect();
+        //} catch (SQLException e) {
+            //System.out.println("DB error: " + e.getMessage());
+        //}
 
         Character player = new Character("Player", 100);
         AICharacter ai = new AICharacter("AI", 100);

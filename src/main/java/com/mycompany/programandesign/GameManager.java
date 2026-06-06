@@ -26,6 +26,14 @@ public class GameManager extends JFrame {
         setVisible(true);
  
         gamePanel.requestFocusInWindow();
+        
+        // Shut down Derby cleanly when window is closed
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                DatabaseManager.getInstance().shutdown();
+            }
+        });
     }
  
     public static void main(String[] args) {

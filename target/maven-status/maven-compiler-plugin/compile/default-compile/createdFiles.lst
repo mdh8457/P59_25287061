@@ -2,6 +2,7 @@ com\mycompany\programandesign\MovementSystem$MovementState.class
 com\mycompany\programandesign\Programandesign.class
 com\mycompany\programandesign\Main.class
 com\mycompany\programandesign\Character.class
+com\mycompany\programandesign\DatabaseManager$MatchResult.class
 com\mycompany\programandesign\GamePanel.class
 com\mycompany\programandesign\GameManager.class
 com\mycompany\programandesign\GamePanel$1.class
@@ -13,4 +14,5 @@ com\mycompany\programandesign\StickFigureRenderer$1.class
 com\mycompany\programandesign\GamePanel$2.class
 com\mycompany\programandesign\Move.class
 com\mycompany\programandesign\AICharacter.class
+com\mycompany\programandesign\GameManager$1.class
 com\mycompany\programandesign\DatabaseManager.class
