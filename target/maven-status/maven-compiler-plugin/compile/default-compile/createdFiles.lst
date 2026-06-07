@@ -1,6 +1,8 @@
+com\mycompany\programandesign\Combatant.class
 com\mycompany\programandesign\MovementSystem$MovementState.class
 com\mycompany\programandesign\Programandesign.class
 com\mycompany\programandesign\Main.class
+com\mycompany\programandesign\PlayerCharacter.class
 com\mycompany\programandesign\Character.class
 com\mycompany\programandesign\DatabaseManager$MatchResult.class
 com\mycompany\programandesign\GamePanel.class

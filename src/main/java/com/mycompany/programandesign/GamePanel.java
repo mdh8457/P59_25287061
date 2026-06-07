@@ -32,13 +32,18 @@ public class GamePanel extends JPanel implements ActionListener {
     // --- Game dimensions ---
     public static final int WIDTH  = 800;
     public static final int HEIGHT = 500;
+    
+    // --- Database tracking ---
+    private int turnCount    = 0;
+    private int matchId      = -1;
+    private boolean resultSaved = false;
  
     // --- Game loop ---
     private final Timer gameTimer;
     private static final int FPS = 60;
  
     // --- Game objects ---
-    private final Character playerChar;
+    private final PlayerCharacter playerChar;
     private final AICharacter aiChar;
     private final CombatSystem combatSystem;
     private final MovementSystem playerMovement;
@@ -78,7 +83,7 @@ public class GamePanel extends JPanel implements ActionListener {
         setFocusable(true);
  
         // Setup characters
-        playerChar = new Character("Player", 100);
+        playerChar = new PlayerCharacter("Player", 100);
         aiChar     = new AICharacter("AI", 100);
         setupMoves();
  
@@ -103,6 +108,8 @@ public class GamePanel extends JPanel implements ActionListener {
  
         gameTimer = new Timer(1000 / FPS, this);
         gameTimer.start();
+        matchId = DatabaseManager.getInstance().saveMatchResult(
+            "In Progress", "In Progress", 0, 100, 100);
     }
  
     // ===================== Game Loop =====================

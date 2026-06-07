@@ -102,6 +102,159 @@ public class DatabaseManager {
             }
         }
     }
+    
+    
+    // ===================== DAO Methods — Save =====================
+
+    /**
+     * Saves the result of a completed match.
+     * Uses PreparedStatement to prevent SQL injection.
+     * @param winner
+     * @param loser
+     * @param turns
+     * @param playerHp
+     * @param aiHp
+     * @return the generated match ID, or -1 if failed
+     */
+    public int saveMatchResult(String winner, String loser, int turns,
+                                int playerHp, int aiHp) {
+        String sql = "INSERT INTO MATCH_RESULTS (WINNER, LOSER, TURNS, PLAYER_HP, AI_HP) " +
+                     "VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(
+                sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, winner);
+            ps.setString(2, loser);
+            ps.setInt(3, turns);
+            ps.setInt(4, playerHp);
+            ps.setInt(5, aiHp);
+            ps.executeUpdate();
+
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                int id = keys.getInt(1);
+                System.out.println("[DB] Match saved with ID: " + id);
+                return id;
+            }
+        } catch (SQLException e) {
+            System.err.println("[DB] Error saving match: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    /**
+     * Saves a single turn's move history for a match.
+     * @param matchId
+     * @param turnNumber
+     * @param playerMove
+     * @param damageDealt
+     * @param aiMove
+     * @param damageTaken
+     */
+    public void saveMoveHistory(int matchId, int turnNumber,
+                                 String playerMove, String aiMove,
+                                 int damageDealt, int damageTaken) {
+        String sql = "INSERT INTO MOVE_HISTORY " +
+                     "(MATCH_ID, TURN_NUMBER, PLAYER_MOVE, AI_MOVE, DAMAGE_DEALT, DAMAGE_TAKEN) " +
+                     "VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, matchId);
+            ps.setInt(2, turnNumber);
+            ps.setString(3, playerMove);
+            ps.setString(4, aiMove);
+            ps.setInt(5, damageDealt);
+            ps.setInt(6, damageTaken);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("[DB] Error saving move history: " + e.getMessage());
+        }
+    }
+    
+    
+    
+    // ===================== DAO Methods — Retrieve =====================
+
+    /**
+     * Returns all match results as a list of MatchResult objects.
+     * @return 
+     */
+    public List<MatchResult> getAllMatchResults() {
+        List<MatchResult> results = new ArrayList<>();
+        String sql = "SELECT * FROM MATCH_RESULTS ORDER BY PLAYED_AT DESC";
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                results.add(new MatchResult(
+                    rs.getInt("ID"),
+                    rs.getString("WINNER"),
+                    rs.getString("LOSER"),
+                    rs.getInt("TURNS"),
+                    rs.getInt("PLAYER_HP"),
+                    rs.getInt("AI_HP"),
+                    rs.getTimestamp("PLAYED_AT").toString()
+                ));
+            }
+        } catch (SQLException e) {
+            System.err.println("[DB] Error retrieving matches: " + e.getMessage());
+        }
+        return results;
+    }
+
+    /**
+     * Returns total number of matches played.
+     * @return 
+     */
+    public int getTotalMatches() {
+        String sql = "SELECT COUNT(*) FROM MATCH_RESULTS WHERE WINNER != 'In Progress'";
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            System.err.println("[DB] Error counting matches: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    /**
+     * Returns total number of player wins.
+     * @return 
+     */
+    public int getPlayerWins() {
+        String sql = "SELECT COUNT(*) FROM MATCH_RESULTS WHERE WINNER = 'Player'";
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            System.err.println("[DB] Error counting wins: " + e.getMessage());
+        }
+        return 0;
+    }
+
+    /**
+     * Returns move history for a specific match.
+     * @param matchId
+     * @return 
+     */
+    public List<String> getMoveHistory(int matchId) {
+        List<String> history = new ArrayList<>();
+        String sql = "SELECT * FROM MOVE_HISTORY WHERE MATCH_ID = ? ORDER BY TURN_NUMBER";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, matchId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                history.add(
+                    "Turn " + rs.getInt("TURN_NUMBER") +
+                    " | You: " + rs.getString("PLAYER_MOVE") +
+                    " | AI: "  + rs.getString("AI_MOVE") +
+                    " | Dealt: " + rs.getInt("DAMAGE_DEALT") +
+                    " | Taken: " + rs.getInt("DAMAGE_TAKEN")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("[DB] Error retrieving move history: " + e.getMessage());
+        }
+        return history;
+    }
+
     // ===================== Shutdown =====================
 
     /**

@@ -22,7 +22,7 @@ public class Main {
             //System.out.println("DB error: " + e.getMessage());
         //}
 
-        Character player = new Character("Player", 100);
+        Character player = new PlayerCharacter("Player", 100);
         AICharacter ai = new AICharacter("AI", 100);
 
         // ATTACKS                name          dmg spd stun  type    dmgRed reflect reach cooldown

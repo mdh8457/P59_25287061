@@ -16,7 +16,8 @@ public class AICharacter extends Character {
     public AICharacter(String name, int hp) {
         super(name, hp);
     }
-
+    
+    @Override
     public Move chooseMove(Character opponent) {
         List<Move> available = new ArrayList<>();
 
