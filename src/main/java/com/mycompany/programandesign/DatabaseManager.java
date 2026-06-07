@@ -170,6 +170,35 @@ public class DatabaseManager {
     }
     
     
+    /**
+    * Updates an existing match record when the game ends.
+    * Replaces the "In Progress" placeholder with real results.
+     * @param id
+     * @param winner
+     * @param loser
+     * @param turns
+     * @param playerHp
+     * @param aiHp
+    */
+    public void updateMatchResult(int id, String winner, String loser,
+                                int turns, int playerHp, int aiHp) {
+        String sql = "UPDATE MATCH_RESULTS SET WINNER=?, LOSER=?, TURNS=?, " +
+                    "PLAYER_HP=?, AI_HP=? WHERE ID=?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, winner);
+            ps.setString(2, loser);
+            ps.setInt(3, turns);
+            ps.setInt(4, playerHp);
+            ps.setInt(5, aiHp);
+            ps.setInt(6, id);
+            ps.executeUpdate();
+            System.out.println("[DB] Match #" + id + " updated — Winner: " + winner);
+        } catch (SQLException e) {
+            System.err.println("[DB] Error updating match: " + e.getMessage());
+        }
+    }
+    
+    
     
     // ===================== DAO Methods — Retrieve =====================
 

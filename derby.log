@@ -1,0 +1,16 @@
+----------------------------------------------------------------
+Sun Jun 07 19:41:08 NZST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-019e-a107-42a9-00000f0db158 
+on database directory C:\Users\TOSHIBA\OneDrive\Documents\NetBeansProjects\programandesign\CombatDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 
+Loaded from file:/C:/Users/TOSHIBA/.m2/repository/org/apache/derby/derby/10.16.1.1/derby-10.16.1.1.jar
+java.vendor=Eclipse Adoptium
+java.runtime.version=25.0.2+10-LTS
+user.dir=C:\Users\TOSHIBA\OneDrive\Documents\NetBeansProjects\programandesign
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Sun Jun 07 19:41:24 NZST 2026:
+Shutting down instance a816c00e-019e-a107-42a9-00000f0db158 on database directory C:\Users\TOSHIBA\OneDrive\Documents\NetBeansProjects\programandesign\CombatDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 

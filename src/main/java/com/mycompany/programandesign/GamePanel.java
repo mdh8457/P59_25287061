@@ -156,6 +156,8 @@ public class GamePanel extends JPanel implements ActionListener {
                     int aiHpBefore     = aiChar.hp;
 
                     combatSystem.processTurn(pendingPlayerMove, aiMove);
+                    
+                    turnCount++;
 
                     int playerDmg = playerHpBefore - playerChar.hp;
                     int aiDmg     = aiHpBefore     - aiChar.hp;
@@ -345,6 +347,14 @@ public class GamePanel extends JPanel implements ActionListener {
     }
  
     private void drawGameOver(Graphics2D g2) {
+         // Save final result to DB exactly once when game ends
+        if (!resultSaved) {
+            resultSaved = true;
+            String winner = playerChar.hp <= 0 ? "AI" : "Player";
+            String loser  = playerChar.hp <= 0 ? "Player" : "AI";
+            DatabaseManager.getInstance().updateMatchResult(
+                matchId, winner, loser, turnCount, playerChar.hp, aiChar.hp);
+        }
         g2.setColor(new Color(0, 0, 0, 160));
         g2.fillRect(0, 0, WIDTH, HEIGHT);
  

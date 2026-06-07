@@ -26,7 +26,8 @@ public class GameManager extends JFrame {
         setVisible(true);
  
         gamePanel.requestFocusInWindow();
-        
+         // Print DB contents on startup to verify everything is working
+        printDatabaseContents();
         // Shut down Derby cleanly when window is closed
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -38,5 +39,29 @@ public class GameManager extends JFrame {
  
     public static void main(String[] args) {
         SwingUtilities.invokeLater(GameManager::new);
+    }
+    private void printDatabaseContents() {
+        System.out.println("\n========== DATABASE CHECK ==========");
+
+        DatabaseManager db = DatabaseManager.getInstance();
+
+        int total = db.getTotalMatches();
+        int wins  = db.getPlayerWins();
+        System.out.println("Total matches: " + total);
+        System.out.println("Player wins:   " + wins);
+        System.out.println("AI wins:       " + (total - wins));
+
+        System.out.println("\n--- Match History ---");
+        var results = db.getAllMatchResults();
+        if (results.isEmpty()) {
+            System.out.println("No matches recorded yet.");
+        } 
+        else {
+            for (var r : results) {
+                System.out.println(r.toString());
+            }
+        }
+
+        System.out.println("====================================\n");
     }
 }
