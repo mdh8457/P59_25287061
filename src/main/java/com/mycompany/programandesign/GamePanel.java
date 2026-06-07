@@ -124,7 +124,16 @@ public class GamePanel extends JPanel implements ActionListener {
         if (combatSystem.isGameOver()) return;
  
         playerMovement.update();
- 
+        int px = playerMovement.getX();
+        int ax = aiMovement.getX();
+        if (Math.abs(px - ax) > 120) {
+            aiMovement.setMovingRight(px > ax);
+            aiMovement.setMovingLeft(px < ax);
+        } else {
+            aiMovement.setMovingRight(false);
+            aiMovement.setMovingLeft(false);
+        }
+        
         
         aiMovement.update();
         
